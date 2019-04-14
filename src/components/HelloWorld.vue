@@ -1,100 +1,91 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+    <!-- Header -->
+    <section class="section is-link is-fullheight" id="home">
+      <div>
+        <h1 class="title is-1" style="clear:both">Movie times</h1>
+        <div v-for="result in results">
+          <p>{{ result.name }}</p>
+          <p>{{ result.distance }} km</p>
+          </br>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+const API = "https://api.cinelist.co.uk/search/cinemas/coordinates/";
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String
+  },
+  data: function() {
+    return {
+      results: []
+    };
+  },
+  methods: {
+    getCinemas(url) {
+      axios
+        .get(url)
+        .then(response => {
+          let firstTenResults = response.data.cinemas.slice(0, 10);
+          this.results = firstTenResults;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    geolocation() {
+      navigator.geolocation.getCurrentPosition(this.buildUrl, this.geoError);
+    },
+    buildUrl(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      this.getCinemas(API + lat + "/" + lon);
+    },
+    geoError() {
+      this.getCinemas(API + "51.510357/-0.116773");
+    }
+  },
+  beforeMount() {
+    this.geolocation();
   }
 };
 </script>
+<!--
 
+    mounted() {
+    axios.get("https://api.cinelist.co.uk/search/cinemas/postcode/n32sg")
+    .then(response => {this.results = response.data.cinemas})
+  }
+
+        {
+          postcode: "WC2R0RN",
+          cinemas: [
+            {
+              name: "Cineworld London - Leicester Square, Camden Town",
+              id: "10539",
+              distance: 0.58
+            },
+            {
+              name: "Odeon London Covent Garden , Camden Town",
+              id: "9869",
+              distance: 0.58
+            },
+            {
+              name: "Odeon London Leicester Square - ODEON Luxe, Camden Town",
+              id: "10716",
+              distance: 0.58
+            }
+          ]
+        }
+        -->
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
