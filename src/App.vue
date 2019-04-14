@@ -1,16 +1,34 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <component
+      :is="currentComponent"
+      @cinemaChosen="loadCinemaComponent"
+      :IDtoSearch="cinemaIDprop"
+    ></component>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Cinemas from "./components/Cinemas.vue";
+import MovieTimes from "./components/MovieTimes.vue";
 
 export default {
   name: "app",
   components: {
-    HelloWorld
+    Cinemas,
+    MovieTimes
+  },
+  data: function() {
+    return {
+      currentComponent: Cinemas,
+      cinemaIDprop: Number
+    };
+  },
+  methods: {
+    loadCinemaComponent(payload) {
+      this.cinemaIDprop = parseInt(payload);
+      this.currentComponent = MovieTimes;
+    }
   }
 };
 </script>

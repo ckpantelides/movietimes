@@ -1,12 +1,14 @@
 <template>
   <div class="hello">
     <!-- Header -->
-    <section class="section is-link is-fullheight" id="home">
+    <section class="section is-link is-fullheight" id="cinemas">
       <div>
-        <h1 class="title is-1" style="clear:both">Movie times</h1>
+        <h1 class="title is-1" style="clear:both">Cinemas</h1>
         <div v-for="result in results">
-          <p>{{ result.name }}</p>
-          <p>{{ result.distance }} km</p>
+            <div @click="cinemaChosen(result.id)">
+              <p>{{ result.name }}</p>
+              <p>{{ result.distance }} km</p>
+            </div>       
           </br>
         </div>
       </div>
@@ -19,12 +21,13 @@ import axios from "axios";
 const API = "https://api.cinelist.co.uk/search/cinemas/coordinates/";
 
 export default {
-  name: "HelloWorld",
+  name: "Cinemas",
   props: {
     msg: String
   },
   data: function() {
     return {
+      cinemaID: Number,
       results: []
     };
   },
@@ -51,6 +54,9 @@ export default {
     },
     geoError() {
       this.getCinemas(API + "51.510357/-0.116773");
+    },
+    cinemaChosen(cinemaID) {
+    this.$emit('cinemaChosen', cinemaID)
     }
   },
   beforeMount() {
@@ -58,34 +64,7 @@ export default {
   }
 };
 </script>
-<!--
 
-    mounted() {
-    axios.get("https://api.cinelist.co.uk/search/cinemas/postcode/n32sg")
-    .then(response => {this.results = response.data.cinemas})
-  }
-
-        {
-          postcode: "WC2R0RN",
-          cinemas: [
-            {
-              name: "Cineworld London - Leicester Square, Camden Town",
-              id: "10539",
-              distance: 0.58
-            },
-            {
-              name: "Odeon London Covent Garden , Camden Town",
-              id: "9869",
-              distance: 0.58
-            },
-            {
-              name: "Odeon London Leicester Square - ODEON Luxe, Camden Town",
-              id: "10716",
-              distance: 0.58
-            }
-          ]
-        }
-        -->
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
