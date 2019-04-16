@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <!-- Header -->
-    <section class="section is-link is-fullheight" id="cinemas">
+    <section class="section is-link is-fullheight" id="#cinemas">
       <div>
         <h1 class="title is-1" style="clear:both">Cinemas</h1>
         <div v-for="result in results">
@@ -40,7 +40,10 @@ export default {
           this.results = firstTenResults;
         })
         .catch(error => {
-          console.log(error);
+          console.log("Error with coordinate search");
+          /****************************************************/
+          // Need to catch error with this too
+          this.getCinemas("https://api.cinelist.co.uk/search/cinemas/location/finchley");
         });
     },
     geolocation() {
@@ -66,7 +69,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+$primary: hsl(171, 100%, 41%);
+
+section {
+  background-color: $primary;
+}
+
 h3 {
   margin: 40px 0 0;
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="section is-link is-fullheight" id="movietimes">
+    <section class="section is-link is-fullheight" id="#movietimes">
       <div>
         <h1 class="title is-1" style="clear:both">Movie Times</h1>
         <div v-for="result in results">
@@ -32,7 +32,7 @@ export default {
     };
   },
   methods: {
-    getCinemas(url) {
+    getMovies(url) {
       axios
         .get(url)
         .then(response => {
@@ -43,7 +43,7 @@ export default {
         });
     },
     buildUrl() {
-      this.getCinemas(API + this.IDtoSearch);
+      this.getMovies(API + this.IDtoSearch);
     }
   },
   beforeMount() {
@@ -53,7 +53,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+$cyan: hsl(204, 86%, 53%);
+
+section {
+  background-color: $cyan;
+  height: 100vh;
+}
 
 h3 {
   margin: 40px 0 0;
