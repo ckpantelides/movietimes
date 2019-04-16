@@ -3,13 +3,19 @@
     <!-- Header -->
     <section class="section is-link is-fullheight" id="#cinemas">
       <div>
-        <h1 class="title is-1" style="clear:both">Cinemas</h1>
+        <h1 class="title is-1 has-text-white" style="clear:both">Cinemas</h1>
         <div v-for="result in results">
-            <div @click="cinemaChosen(result.id)">
-              <p>{{ result.name }}</p>
-              <p>{{ result.distance }} km</p>
-            </div>       
-          </br>
+          <div class="card" @click="cinemaChosen(result.id)">
+            <div class="card-content">
+              <p class="subtitle has-text-weight-semibold">{{ result.name }}</p>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>{{ result.distance }} km</span>
+              </p>
+            </footer>
+          </div>
+          <br />
         </div>
       </div>
     </section>
@@ -43,7 +49,9 @@ export default {
           console.log("Error with coordinate search");
           /****************************************************/
           // Need to catch error with this too
-          this.getCinemas("https://api.cinelist.co.uk/search/cinemas/location/finchley");
+          this.getCinemas(
+            "https://api.cinelist.co.uk/search/cinemas/location/finchley"
+          );
         });
     },
     geolocation() {
@@ -59,7 +67,7 @@ export default {
       this.getCinemas(API + "51.510357/-0.116773");
     },
     cinemaChosen(cinemaID) {
-    this.$emit('cinemaChosen', cinemaID)
+      this.$emit("cinemaChosen", cinemaID);
     }
   },
   beforeMount() {
@@ -71,9 +79,17 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 $primary: hsl(171, 100%, 41%);
+$card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
 section {
   background-color: $primary;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  box-shadow: $card-shadow;
+  // max-width: 500px;
 }
 
 h3 {

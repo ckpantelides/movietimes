@@ -1,16 +1,25 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="section is-link is-fullheight" id="#movietimes">
+    <section class="section is-link is-fullheight is-centered" id="#movietimes">
       <div>
-        <h1 class="title is-1" style="clear:both">Movie Times</h1>
+        <h1 class="title is-1 has-text-white" style="clear:both">
+          Movie Times
+        </h1>
         <div v-for="result in results">
-          <p>{{ result.title }}</p>
-          <ul v-for="el in result.times">
-            <li>{{ el }}</li>
-          </ul>
-          </br>
-          </br>
+          <div class="card">
+            <div class="card-content">
+              <p class="subtitle has-text-weight-semibold">
+                {{ result.title }}
+              </p>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item" v-for="el in result.times">
+                <span>{{ el }}</span>
+              </p>
+            </footer>
+          </div>
+          <br />
         </div>
       </div>
     </section>
@@ -55,10 +64,17 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 $cyan: hsl(204, 86%, 53%);
+$card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
 section {
+  display: flex;
   background-color: $cyan;
-  height: 100vh;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.card {
+  box-shadow: $card-shadow;
 }
 
 h3 {
