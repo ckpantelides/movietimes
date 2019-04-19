@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- Header -->
-
     <section class="section is-link is-fullheight is-centered" id="#movietimes">
       <span class="icon" @click="navigateHome">
         <i class="fas fa-home" style="color:white"></i>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="section is-link is-fullheight is-centered" id="#movietimes">
+    <section class="section is-link is-centered" id="#dayafter">
       <div>
         <div v-for="result in results">
           <div class="card">
