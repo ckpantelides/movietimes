@@ -2,7 +2,8 @@
   <div id="app">
     <component
       :is="currentComponent"
-      @cinemaChosen="loadCinemaComponent"
+      @cinemaChosen="loadMovieTimes"
+      @navigateHome="reloadCinemas"
       :IDtoSearch="cinemaIDprop"
     ></component>
   </div>
@@ -25,9 +26,12 @@ export default {
     };
   },
   methods: {
-    loadCinemaComponent(payload) {
+    loadMovieTimes(payload) {
       this.cinemaIDprop = parseInt(payload);
       this.currentComponent = MovieTimes;
+    },
+    reloadCinemas() {
+      this.currentComponent = Cinemas;
     }
   }
 };

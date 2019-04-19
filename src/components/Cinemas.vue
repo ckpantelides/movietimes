@@ -2,7 +2,21 @@
   <div class="hello">
     <!-- Header -->
     <section class="section is-link is-fullheight" id="#cinemas">
-      <div>
+      <!-- Searchbar
+      <div class="field is-grouped">
+        <p class="control is-expanded">
+          <input
+            class="input"
+            type="text"
+            placeholder="Search by location, city"
+          />
+        </p>
+        <p class="control">
+          <a class="button is-info">Search</a>
+        </p>
+      </div>
+      -->
+      <div class="cinemaCards">
         <h1 class="title is-1 has-text-white" style="clear:both">Cinemas</h1>
         <div v-for="result in results">
           <div class="card" @click="cinemaChosen(result.id)">
@@ -83,13 +97,24 @@ $card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
 section {
   background-color: $primary;
-  display: flex;
-  justify-content: center;
+  min-height: 100vh;
+}
+
+.field {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.cinemaCards {
+  width: 100vw;
 }
 
 .card {
   box-shadow: $card-shadow;
-  // max-width: 500px;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h3 {
