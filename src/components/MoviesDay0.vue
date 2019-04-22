@@ -134,7 +134,7 @@ img {
 
 // new for socket
 p.title.is-4 {
-  padding-top: 40%;
+  padding: 2rem;
   text-align: center;
 }
 
