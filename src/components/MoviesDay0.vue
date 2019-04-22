@@ -3,15 +3,35 @@
     <!-- Header -->
     <section class="section is-link is-centered" id="#today">
       <div>
-        <div v-for="result in results">
+        <div v-for="pair in pairs">
           <div class="card">
+            <!--
+            <div class="card-image">
+              <figure class="image">
+                <img :src="image" alt="Placeholder image" />
+              </figure>
+            </div>
+            
             <div class="card-content">
               <p class="subtitle has-text-weight-semibold">
                 {{ result.title }}
               </p>
             </div>
+            -->
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-128x128">
+                    <img :src="pair.image" alt="Placeholder image" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{ pair.result.title }}</p>
+                </div>
+              </div>
+            </div>
             <footer class="card-footer">
-              <p class="card-footer-item" v-for="el in result.times">
+              <p class="card-footer-item" v-for="el in pair.result.times">
                 <span>{{ el }}</span>
               </p>
             </footer>
@@ -25,6 +45,10 @@
 
 <script>
 import axios from "axios";
+import io from "socket.io-client";
+
+// socket connects client to server for movie image search
+var socket = io("http://localhost:8000");
 const API = "https://api.cinelist.co.uk/get/times/cinema/";
 
 export default {
@@ -34,6 +58,7 @@ export default {
   },
   data: function() {
     return {
+      images: [],
       results: []
     };
   },
@@ -43,6 +68,8 @@ export default {
         .get(url)
         .then(response => {
           this.results = response.data.listings;
+          // data emitted to server, so server can perform movie image search
+          socket.emit("request images", { data: response.data.listings });
         })
         .catch(error => {
           console.log(error);
@@ -54,6 +81,25 @@ export default {
   },
   beforeMount() {
     this.buildUrl();
+  },
+  mounted() {
+    socket.on("image links", data => {
+      // socket does not support arrays, therefore my array was converted to a string!!!
+      // var arrayData = data.split(",");
+      //this.images = [...this.images, data[0]];
+      this.images = data;
+      console.log(this.images);
+    });
+  },
+  computed: {
+    pairs() {
+      return this.results.map((result, i) => {
+        return {
+          result: result,
+          image: this.images[i]
+        };
+      });
+    }
   }
 };
 </script>
@@ -69,8 +115,34 @@ section {
   padding: 0;
 }
 
+//new for socket
+// hides bottom of image poster
+.media {
+  overflow-y: hidden;
+  height: 100%;
+}
+img {
+  //min-height: 160px;
+  //width: auto;
+  // overflow-y: hidden;
+}
+
+//new for socket
+.card-content {
+  padding: 0;
+}
+
+// new for socket
+p.title.is-4 {
+  padding-top: 40%;
+  text-align: center;
+}
+
 .card {
   box-shadow: $card-shadow;
+  // this is new with images
+  min-width: 300px;
+  max-width: 500px;
 }
 
 h3 {
