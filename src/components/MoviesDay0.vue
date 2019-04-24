@@ -3,35 +3,22 @@
     <!-- Header -->
     <section class="section is-link is-centered" id="#today">
       <div>
-        <div v-for="pair in pairs">
+        <div v-for="(result, index) in results" v-bind:key="index">
           <div class="card">
-            <!--
-            <div class="card-image">
-              <figure class="image">
-                <img :src="image" alt="Placeholder image" />
-              </figure>
-            </div>
-            
-            <div class="card-content">
-              <p class="subtitle has-text-weight-semibold">
-                {{ result.title }}
-              </p>
-            </div>
-            -->
             <div class="card-content">
               <div class="media">
                 <div class="media-left">
                   <figure class="image is-128x128">
-                    <img :src="pair.image" alt="Placeholder image" />
+                    <img :src="images[index]" alt="Placeholder image" />
                   </figure>
                 </div>
                 <div class="media-content">
-                  <p class="title is-4">{{ pair.result.title }}</p>
+                  <p class="title is-4">{{ result.title }}</p>
                 </div>
               </div>
             </div>
             <footer class="card-footer">
-              <p class="card-footer-item" v-for="el in pair.result.times">
+              <p class="card-footer-item" v-for="el in result.times">
                 <span>{{ el }}</span>
               </p>
             </footer>
@@ -84,22 +71,8 @@ export default {
   },
   mounted() {
     socket.on("image links", data => {
-      // socket does not support arrays, therefore my array was converted to a string!!!
-      // var arrayData = data.split(",");
-      //this.images = [...this.images, data[0]];
       this.images = data;
-      console.log(this.images);
     });
-  },
-  computed: {
-    pairs() {
-      return this.results.map((result, i) => {
-        return {
-          result: result,
-          image: this.images[i]
-        };
-      });
-    }
   }
 };
 </script>
