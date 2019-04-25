@@ -1,14 +1,21 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="section is-link is-centered" id="#dayafter">
+    <section class="section is-link is-centered" id="#today">
       <div>
-        <div v-for="result in results">
+        <div v-for="(result, index) in results" v-bind:key="index">
           <div class="card">
             <div class="card-content">
-              <p class="subtitle has-text-weight-semibold">
-                {{ result.title }}
-              </p>
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-128x128">
+                    <img :src="images[index]" alt="Placeholder image" />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{ result.title }}</p>
+                </div>
+              </div>
             </div>
             <footer class="card-footer">
               <p class="card-footer-item" v-for="el in result.times">
@@ -25,15 +32,21 @@
 
 <script>
 import axios from "axios";
+import io from "socket.io-client";
+
+// socket connects client to server for movie image search
+// var socket = io("http://localhost:8000");
+var socket = io("https://movietime-server.herokuapp.com/");
 const API = "https://api.cinelist.co.uk/get/times/cinema/";
 
 export default {
-  name: "MoviesDay2",
+  name: "MovieDay2",
   props: {
     IDtoSearch: Number
   },
   data: function() {
     return {
+      images: [],
       results: []
     };
   },
@@ -43,6 +56,8 @@ export default {
         .get(url)
         .then(response => {
           this.results = response.data.listings;
+          // data emitted to server, so server can perform movie image search
+          socket.emit("request images", { data: response.data.listings });
         })
         .catch(error => {
           console.log(error);
@@ -54,6 +69,11 @@ export default {
   },
   beforeMount() {
     this.buildUrl();
+  },
+  mounted() {
+    socket.on("image links", data => {
+      this.images = data;
+    });
   }
 };
 </script>
@@ -69,8 +89,25 @@ section {
   padding: 0;
 }
 
+// hides bottom of image poster
+.media {
+  overflow-y: hidden;
+  height: 100%;
+}
+
+.card-content {
+  padding: 0;
+}
+
+p.title.is-4 {
+  padding: 2rem;
+  text-align: center;
+}
+
 .card {
   box-shadow: $card-shadow;
+  min-width: 300px;
+  max-width: 500px;
 }
 
 h3 {

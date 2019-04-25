@@ -35,7 +35,8 @@ import axios from "axios";
 import io from "socket.io-client";
 
 // socket connects client to server for movie image search
-var socket = io("http://localhost:8000");
+// var socket = io("http://localhost:8000");
+var socket = io("https://movietime-server.herokuapp.com/");
 const API = "https://api.cinelist.co.uk/get/times/cinema/";
 
 export default {
@@ -88,24 +89,16 @@ section {
   padding: 0;
 }
 
-//new for socket
 // hides bottom of image poster
 .media {
   overflow-y: hidden;
   height: 100%;
 }
-img {
-  //min-height: 160px;
-  //width: auto;
-  // overflow-y: hidden;
-}
 
-//new for socket
 .card-content {
   padding: 0;
 }
 
-// new for socket
 p.title.is-4 {
   padding: 2rem;
   text-align: center;
@@ -113,7 +106,6 @@ p.title.is-4 {
 
 .card {
   box-shadow: $card-shadow;
-  // this is new with images
   min-width: 300px;
   max-width: 500px;
 }
