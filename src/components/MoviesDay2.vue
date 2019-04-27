@@ -128,4 +128,14 @@ li {
 a {
   color: #42b983;
 }
+
+@media screen and (max-width: 768px) {
+  section {
+    padding: 1.5rem 0;
+  }
+
+  .card {
+    max-width: 95vw;
+  }
+}
 </style>

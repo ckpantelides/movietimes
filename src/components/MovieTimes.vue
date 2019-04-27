@@ -122,4 +122,10 @@ p.tab {
 h3 {
   margin: 40px 0 0;
 }
+
+@media screen and (max-width: 768px) {
+  section {
+    padding: 1.5rem 0;
+  }
+}
 </style>
