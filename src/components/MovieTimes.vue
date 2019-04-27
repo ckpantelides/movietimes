@@ -37,7 +37,6 @@
       </div>
       <component :is="currentComponent" :IDtoSearch="IDtoSearch"></component>
     </section>
-    '
   </div>
 </template>
 
