@@ -110,6 +110,11 @@ p.title.is-4 {
   max-width: 500px;
 }
 
+footer {
+  max-width: 500px;
+  overflow-x: auto;
+}
+
 h3 {
   margin: 40px 0 0;
 }
@@ -134,7 +139,8 @@ a {
     padding: 1.5rem 0;
   }
 
-  .card {
+  .card,
+  footer {
     max-width: 95vw;
   }
 }
