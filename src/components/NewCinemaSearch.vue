@@ -14,12 +14,13 @@
           <span>
             <i
               class="fas fa-search"
-              @click="saveLocation()"
+              @click="newSearch()"
               style="color:white; vertical-align:middle"
             ></i>
           </span>
         </div>
       </div>
+
       <div class="cinemaCards">
         <h1 class="title is-1 has-text-white" style="clear:both">Cinemas</h1>
         <div v-for="result in results">
@@ -42,12 +43,12 @@
 
 <script>
 import axios from "axios";
-const API = "https://api.cinelist.co.uk/search/cinemas/coordinates/";
+const API = "https://api.cinelist.co.uk/search/cinemas/location/";
 
 export default {
-  name: "Cinemas",
+  name: "NewCinemaSearch",
   props: {
-    msg: String
+    newLocation: String
   },
   data: function() {
     return {
@@ -63,6 +64,7 @@ export default {
         .then(response => {
           let firstTenResults = response.data.cinemas.slice(0, 10);
           this.results = firstTenResults;
+          this.location = "";
         })
         .catch(error => {
           console.log("Error with coordinate search");
@@ -73,27 +75,18 @@ export default {
           );
         });
     },
-    geolocation() {
-      navigator.geolocation.getCurrentPosition(this.buildUrl, this.geoError);
-    },
-    buildUrl(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-
-      this.getCinemas(API + lat + "/" + lon);
-    },
-    geoError() {
-      this.getCinemas(API + "51.510357/-0.116773");
+    buildUrl() {
+      this.getCinemas(API + this.newLocation);
     },
     cinemaChosen(cinemaID) {
       this.$emit("cinemaChosen", cinemaID);
     },
-    saveLocation() {
-      this.$emit("newCinemaSearch", this.location);
+    newSearch() {
+      this.getCinemas(API + this.location);
     }
   },
   beforeMount() {
-    this.geolocation();
+    this.buildUrl();
   }
 };
 </script>

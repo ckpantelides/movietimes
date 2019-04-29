@@ -4,7 +4,9 @@
       :is="currentComponent"
       @cinemaChosen="loadMovieTimes"
       @navigateHome="reloadCinemas"
+      @newCinemaSearch="newCinemaSearch"
       :IDtoSearch="cinemaIDprop"
+      :newLocation="newLocation"
     ></component>
   </div>
 </template>
@@ -12,17 +14,20 @@
 <script>
 import Cinemas from "./components/Cinemas.vue";
 import MovieTimes from "./components/MovieTimes.vue";
+import NewCinemaSearch from "./components/NewCinemaSearch.vue";
 
 export default {
   name: "app",
   components: {
     Cinemas,
-    MovieTimes
+    MovieTimes,
+    NewCinemaSearch
   },
   data: function() {
     return {
       currentComponent: Cinemas,
-      cinemaIDprop: Number
+      cinemaIDprop: Number,
+      newLocation: String
     };
   },
   methods: {
@@ -32,6 +37,10 @@ export default {
     },
     reloadCinemas() {
       this.currentComponent = Cinemas;
+    },
+    newCinemaSearch(data) {
+      this.newLocation = data;
+      this.currentComponent = NewCinemaSearch;
     }
   }
 };

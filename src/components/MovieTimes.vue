@@ -58,6 +58,7 @@ export default {
   data: function() {
     return {
       currentComponent: MoviesDay0,
+      // Boolean for the styling/underlining of "Today"
       componentOpenedFirstTime: true
     };
   },
