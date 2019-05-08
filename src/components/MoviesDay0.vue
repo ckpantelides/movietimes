@@ -4,29 +4,47 @@
     <div class="loader" v-if="loader"></div>
     <!-- Header -->
     <section class="section is-link is-centered" id="#today">
-      <div>
+      <!--
+         <vue-flip :active-click="true">
+           <div slot="front">
+           <img :src="images[index].poster" alt="Placeholder image" />
+      <p class="blurb">{{ images[index].blurb }}</p>-->
+      <div class="card-container">
         <div v-for="(result, index) in results" v-bind:key="index">
-          <div class="card">
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-128x128">
-                    <img :src="images[index]" alt="Placeholder image" />
-                  </figure>
+          <vue-flip :active-click="true" style="clear:both">
+            <div slot="front">
+              <div class="card">
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left">
+                      <figure class="image is-128x128">
+                        <img
+                          :src="images[index].poster"
+                          alt="Placeholder image"
+                        />
+                      </figure>
+                    </div>
+                    <div class="media-content">
+                      <p class="title is-4">{{ result.title }}</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="media-content">
-                  <p class="title is-4">{{ result.title }}</p>
-                </div>
+                <footer class="card-footer">
+                  <p class="card-footer-item" v-for="el in result.times">
+                    <span>{{ el }}</span>
+                  </p>
+                </footer>
               </div>
             </div>
-            <footer class="card-footer">
-              <p class="card-footer-item" v-for="el in result.times">
-                <span>{{ el }}</span>
-              </p>
-            </footer>
-          </div>
-          <br />
+            <div slot="back">
+              <div class="card" style="padding: 30px 0px">
+                <p class="blurb">{{ images[index].blurb }}</p>
+              </div>
+              <br />
+            </div>
+          </vue-flip>
         </div>
+        <br />
       </div>
     </section>
   </div>
@@ -35,14 +53,18 @@
 <script>
 import axios from "axios";
 import io from "socket.io-client";
+import VueFlip from "vue-flip";
 
 // socket connects client to server for movie image search
-// var socket = io("http://localhost:8000");
-var socket = io("https://movietime-server.herokuapp.com/");
+var socket = io("http://localhost:8000");
+// var socket = io("https://movietime-server.herokuapp.com/");
 const API = "https://api.cinelist.co.uk/get/times/cinema/";
 
 export default {
   name: "MovieDay0",
+  components: {
+    "vue-flip": VueFlip
+  },
   props: {
     IDtoSearch: Number
   },
@@ -108,10 +130,21 @@ p.title.is-4 {
   text-align: center;
 }
 
+p.blurb {
+  font-size: 0.9rem;
+}
+
+.card-container {
+  // display: flex;
+  width: 450px;
+  height: 100vh;
+}
+
 .card {
   box-shadow: $card-shadow;
-  min-width: 300px;
-  max-width: 500px;
+  width: 450px;
+  // min-width: 350px;
+  //  max-width: 500px;
 }
 
 footer {
