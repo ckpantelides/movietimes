@@ -23,6 +23,9 @@
 
       <div class="cinemaCards">
         <h1 class="title is-1 has-text-white" style="clear:both">Cinemas</h1>
+        <!-- Loader -->
+        <div class="loader" v-if="loader"></div>
+        <!-- Cinema search results -->
         <div v-for="result in results">
           <div class="card" @click="cinemaChosen(result.id)">
             <div class="card-content">
@@ -54,7 +57,8 @@ export default {
     return {
       cinemaID: Number,
       results: [],
-      location: ""
+      location: "",
+      loader: true
     };
   },
   methods: {
@@ -65,6 +69,7 @@ export default {
           let firstTenResults = response.data.cinemas.slice(0, 10);
           this.results = firstTenResults;
           this.location = "";
+          this.loader = false;
         })
         .catch(error => {
           console.log("Error with coordinate search");
@@ -82,6 +87,8 @@ export default {
       this.$emit("cinemaChosen", cinemaID);
     },
     newSearch() {
+      this.results = [];
+      this.loader = true;
       this.getCinemas(API + this.location);
     }
   },
@@ -139,6 +146,27 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.loader {
+  transform: translate(-50%, -50%);
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 2s linear infinite;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media screen and (max-width: 768px) {

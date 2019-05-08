@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- Loader -->
+    <div class="loader" v-if="loader"></div>
     <!-- Header -->
     <section class="section is-link is-centered" id="#today">
       <div>
@@ -47,7 +49,8 @@ export default {
   data: function() {
     return {
       images: [],
-      results: []
+      results: [],
+      loader: true
     };
   },
   methods: {
@@ -56,6 +59,7 @@ export default {
         .get(url)
         .then(response => {
           this.results = response.data.listings;
+          this.loader = false;
           // data emitted to server, so server can perform movie image search
           socket.emit("request images", { data: response.data.listings });
         })
@@ -132,6 +136,27 @@ li {
 
 a {
   color: #42b983;
+}
+
+.loader {
+  transform: translate(-50%, -50%);
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid hsl(171, 100%, 41%); /* Green */
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 2s linear infinite;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media screen and (max-width: 768px) {
