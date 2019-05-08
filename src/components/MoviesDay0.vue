@@ -11,7 +11,7 @@
       <p class="blurb">{{ images[index].blurb }}</p>-->
       <div class="card-container">
         <div v-for="(result, index) in results" v-bind:key="index">
-          <vue-flip :active-click="true" style="clear:both">
+          <vue-flip :active-click="true">
             <div slot="front">
               <div class="card">
                 <div class="card-content">
@@ -36,13 +36,15 @@
                 </footer>
               </div>
             </div>
+
             <div slot="back">
-              <div class="card" style="padding: 30px 0px">
+              <div class="card" style="padding: 30px 5px; overflow-y:auto">
                 <p class="blurb">{{ images[index].blurb }}</p>
               </div>
-              <br />
             </div>
           </vue-flip>
+          <br />
+          <div class="break"></div>
         </div>
         <br />
       </div>
@@ -135,20 +137,25 @@ p.blurb {
 }
 
 .card-container {
-  // display: flex;
   width: 450px;
-  height: 100vh;
 }
 
 .card {
   box-shadow: $card-shadow;
   width: 450px;
+  margin-bottom: 50px;
+  height: 178px;
   // min-width: 350px;
   //  max-width: 500px;
 }
 
+// break inserted as cards were overlapping with vue-flip
+.break {
+  height: 185px;
+}
+
 footer {
-  max-width: 500px;
+  max-width: 450px;
   overflow-x: auto;
 }
 
@@ -197,9 +204,10 @@ a {
     padding: 1.5rem 0;
   }
 
+  .card-container,
   .card,
   footer {
-    max-width: 95vw;
+    width: 95vw;
   }
 }
 </style>
