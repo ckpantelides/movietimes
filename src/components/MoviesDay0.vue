@@ -4,11 +4,6 @@
     <div class="loader" v-if="loader"></div>
     <!-- Header -->
     <section class="section is-link is-centered" id="#today">
-      <!--
-         <vue-flip :active-click="true">
-           <div slot="front">
-           <img :src="images[index].poster" alt="Placeholder image" />
-      <p class="blurb">{{ images[index].blurb }}</p>-->
       <div class="card-container">
         <div v-for="(result, index) in results" v-bind:key="index">
           <vue-flip :active-click="true">
@@ -58,8 +53,8 @@ import io from "socket.io-client";
 import VueFlip from "vue-flip";
 
 // socket connects client to server for movie image search
-var socket = io("http://localhost:8000");
-// var socket = io("https://movietime-server.herokuapp.com/");
+// var socket = io("http://localhost:8000");
+var socket = io("https://movietime-server.herokuapp.com/");
 const API = "https://api.cinelist.co.uk/get/times/cinema/";
 
 export default {
