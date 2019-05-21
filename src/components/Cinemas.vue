@@ -11,10 +11,9 @@
             v-model="location"
             placeholder="City, town or placename"
           />
-          <span>
+          <span class="icon" @click="saveLocation">
             <i
               class="fas fa-search"
-              @click="saveLocation()"
               style="color:white; vertical-align:middle"
             ></i>
           </span>
@@ -45,7 +44,7 @@
 
 <script>
 import axios from "axios";
-const API = "https://api.cinelist.co.uk/search/cinemas/coordinates/";
+const API = "https://cinelistapi.herokuapp.com/search/cinemas/coordinates/";
 
 export default {
   name: "Cinemas",
@@ -74,7 +73,7 @@ export default {
           /****************************************************/
           // Need to catch error with this too
           this.getCinemas(
-            "https://api.cinelist.co.uk/search/cinemas/location/finchley"
+            "https://cinelistapi.herokuapp.com/search/cinemas/location/finchley"
           );
         });
     },

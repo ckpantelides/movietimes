@@ -55,7 +55,7 @@ import VueFlip from "vue-flip";
 // socket connects client to server for movie image search
 // var socket = io("http://localhost:8000");
 var socket = io("https://movietime-server.herokuapp.com/");
-const API = "https://api.cinelist.co.uk/get/times/cinema/";
+const API = "https://cinelistapi.herokuapp.com/get/times/cinema/";
 
 export default {
   name: "MovieDay0",
