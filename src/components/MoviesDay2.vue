@@ -115,7 +115,11 @@ section {
 // hides bottom of image poster
 .media {
   overflow-y: hidden;
-  height: 100%;
+  height: 128px;
+}
+
+.media-content {
+  overflow-y: auto;
 }
 
 .card-content {
@@ -175,8 +179,8 @@ a {
 
 .loader {
   transform: translate(-50%, -50%);
-  border: 10px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid hsl(171, 100%, 41%); /* Green */
+  border: 7px solid #f3f3f3; /* Light grey */
+  border-top: 6px solid hsl(204, 78%, 33%); /* Dark blue */
   border-radius: 50%;
   width: 45px;
   height: 45px;

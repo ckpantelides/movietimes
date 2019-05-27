@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="cinemaCards">
-        <h1 class="title is-1 has-text-white" style="clear:both">Cinemas</h1>
+        <h1 class="title is-2 has-text-white" style="clear:both">cinemas</h1>
         <!-- Loader -->
         <div class="loader" v-if="loader"></div>
         <!-- Cinema search results -->
@@ -105,11 +105,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 $primary: hsl(171, 100%, 41%);
+$secondary: rgb(196, 196, 196);
 $card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
 section {
-  background-color: $primary;
-  min-height: 100vh;
+  // background-color: $primary;
+  background: linear-gradient(to bottom, $primary 35%, $secondary 0%);
+  //min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  width: 100vw;
 }
 
 .search-container {
@@ -154,8 +159,8 @@ a {
 
 .loader {
   transform: translate(-50%, -50%);
-  border: 10px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #3498db; /* Blue */
+  border: 7px solid #f3f3f3; /* Light grey */
+  border-top: 6px solid hsl(171, 100%, 30%); /* Dark primary */
   border-radius: 50%;
   width: 45px;
   height: 45px;
@@ -176,6 +181,7 @@ a {
 @media screen and (max-width: 768px) {
   section {
     padding: 1.5rem 0;
+    background: linear-gradient(to bottom, $primary 30%, $secondary 0%);
   }
 
   .card {
