@@ -131,7 +131,7 @@ h3 {
 @media screen and (max-width: 768px) {
   section {
     padding: 1.5rem 0;
-    background: linear-gradient(to bottom, $cyan 30%, $secondary 0%);
+    background: linear-gradient(to bottom, $cyan 30%, white 0%);
   }
 }
 </style>
