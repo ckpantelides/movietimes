@@ -7,7 +7,7 @@
       </span>
       <br />
       <br />
-      <h1 class="title is-2 has-text-white">movie times</h1>
+      <h1 class="title is-2 has-text-white">Movie Times</h1>
       <div class="tabs is-centered">
         <p
           @click="chooseMoviesDay('MoviesDay0')"
@@ -94,17 +94,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap");
+
 $cyan: hsl(204, 86%, 53%);
 $card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
-$secondary: rgb(196, 196, 196);
+$secondary: #f3f3f3;
 
 section {
-  // background-color: $primary;
   background: linear-gradient(to bottom, $cyan 35%, $secondary 0%);
-  //min-height: 100vh;
   height: 100vh;
   overflow-y: auto;
   width: 100vw;
+}
+
+h1.title {
+  font-family: Josefin Sans, sans-serif;
+  font-weight: lighter;
 }
 
 div.tabs {
@@ -131,7 +136,7 @@ h3 {
 @media screen and (max-width: 768px) {
   section {
     padding: 1.5rem 0;
-    background: linear-gradient(to bottom, $cyan 30%, white 0%);
+    background: linear-gradient(to bottom, $cyan 30%, $secondary 0%);
   }
 }
 </style>

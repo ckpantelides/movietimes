@@ -21,7 +21,7 @@
       </div>
 
       <div class="cinemaCards">
-        <h1 class="title is-2 has-text-white" style="clear:both">cinemas</h1>
+        <h1 class="title is-2 has-text-white" style="clear:both">Cinemas</h1>
         <!-- Loader -->
         <div class="loader" v-if="loader"></div>
         <!-- Cinema search results -->
@@ -99,8 +99,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap");
+
 $primary: hsl(171, 100%, 41%);
-$secondary: rgb(196, 196, 196);
+$secondary: #f3f3f3;
 $card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
 section {
@@ -108,6 +110,11 @@ section {
   height: 100vh;
   overflow-y: auto;
   width: 100vw;
+}
+
+h1.title {
+  font-family: Josefin Sans, sans-serif;
+  font-weight: lighter;
 }
 
 .search-container {
@@ -152,7 +159,7 @@ a {
 
 .loader {
   transform: translate(-50%, -50%);
-  border: 7px solid #f3f3f3; /* Light grey */
+  border: 7px solid #d4d4d4;
   border-top: 6px solid hsl(171, 100%, 30%); /* Dark primary */
   border-radius: 50%;
   width: 45px;
@@ -174,7 +181,7 @@ a {
 @media screen and (max-width: 768px) {
   section {
     padding: 1.5rem 0;
-    background: linear-gradient(to bottom, $primary 30%, white 0%);
+    background: linear-gradient(to bottom, $primary 30%, $secondary 0%);
   }
 
   .card {

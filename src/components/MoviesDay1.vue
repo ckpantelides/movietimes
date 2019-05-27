@@ -179,7 +179,7 @@ a {
 
 .loader {
   transform: translate(-50%, -50%);
-  border: 7px solid #f3f3f3; /* Light grey */
+  border: 7px solid #d4d4d4;
   border-top: 6px solid hsl(204, 78%, 33%); /* Dark blue */
   border-radius: 50%;
   width: 45px;
