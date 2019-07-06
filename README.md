@@ -17,8 +17,8 @@ By clicking on an individual film listing, it flips over to give you the movie d
 
 ![img1] ![img2]
 
-[img1]: https://github.com/ckpantelides/belles-bakes/blob/images/belles-crop1.jpg
-[img2]: https://github.com/ckpantelides/belles-bakes/blob/images/belles-crop2.png
+[img1]: https://github.com/ckpantelides/movietimes/blob/images/movie-web1.jpg
+[img2]: https://github.com/ckpantelides/movietimes/blob/images/movie-web2.jpg
 
 #### Installation
 
