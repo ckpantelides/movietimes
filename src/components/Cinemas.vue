@@ -12,10 +12,7 @@
             placeholder="City, town or placename"
           />
           <span class="icon" @click="saveLocation">
-            <i
-              class="fas fa-search"
-              style="color:white; vertical-align:middle"
-            ></i>
+            <i class="fas fa-search" style="color:white; vertical-align:middle"></i>
           </span>
         </div>
       </div>
@@ -28,10 +25,11 @@
           <div class="card" @click="cinemaChosen(result.id)">
             <div class="card-content">
               <p class="subtitle has-text-weight-semibold">{{ result.name }}</p>
+              <p>{{ result.address }} {{ result.postal_code }}</p>
             </div>
             <footer class="card-footer">
               <p class="card-footer-item">
-                <span>{{ result.distance }} km</span>
+                <span>{{ result._distance }} km</span>
               </p>
             </footer>
           </div>
@@ -44,6 +42,7 @@
 
 <script>
 import axios from "axios";
+import mockData from "../assets/cinemas.json";
 const API = "https://cinelistapi.herokuapp.com/search/cinemas/coordinates/";
 
 export default {
@@ -54,12 +53,13 @@ export default {
   data: function() {
     return {
       cinemaID: Number,
-      results: [],
+      results: mockData,
       location: "",
-      loader: true
+      loader: false // as using mock data
     };
   },
   methods: {
+    /*
     getCinemas(url) {
       axios
         .get(url)
@@ -70,8 +70,6 @@ export default {
         })
         .catch(error => {
           console.log("Error with coordinate search");
-          /****************************************************/
-          // Need to catch error with this too
           this.getCinemas(
             "https://cinelistapi.herokuapp.com/search/cinemas/location/finchley"
           );
@@ -89,16 +87,19 @@ export default {
     geoError() {
       this.getCinemas(API + "51.510357/-0.116773");
     },
+    */
     cinemaChosen(cinemaID) {
       this.$emit("cinemaChosen", cinemaID);
-    },
+    }
+  }
+  /*,
     saveLocation() {
       this.$emit("newCinemaSearch", this.location);
     }
   },
   beforeMount() {
     this.geolocation();
-  }
+  } */
 };
 </script>
 

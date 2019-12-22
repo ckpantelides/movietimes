@@ -13,20 +13,19 @@
                   <div class="media">
                     <div class="media-left">
                       <figure class="image is-128x128">
-                        <img
-                          :src="images[index].poster"
-                          alt="Placeholder image"
-                        />
+                        <!--     <img :src="images[index].poster" alt="Placeholder image" /> -->
                       </figure>
                     </div>
                     <div class="media-content">
-                      <p class="title is-4">{{ result.title }}</p>
+                      <p class="title is-4">{{ result.name }}</p>
                     </div>
                   </div>
                 </div>
                 <footer class="card-footer">
-                  <p class="card-footer-item" v-for="el in result.times">
-                    <span>{{ el }}</span>
+                  <p class="card-footer-item" v-for="el in result.schedules[0].performances">
+                    <a :href="el.links[0].url" target="_blank">
+                      <span>{{ el.ts.slice(11, 16) }}</span>
+                    </a>
                   </p>
                 </footer>
               </div>
@@ -34,7 +33,7 @@
 
             <div slot="back">
               <div class="card" style="padding: 30px 5px; overflow-y:auto">
-                <p class="blurb">{{ images[index].blurb }}</p>
+                <!--  <p class="blurb">{{ images[index].blurb }}</p> -->
               </div>
             </div>
           </vue-flip>
@@ -51,6 +50,7 @@
 import axios from "axios";
 import io from "socket.io-client";
 import VueFlip from "vue-flip";
+import mockFilms from "../assets/films.json";
 
 // socket connects client to server for movie image search
 // var socket = io("http://localhost:8000");
@@ -69,9 +69,27 @@ export default {
     return {
       images: [],
       results: [],
-      loader: true
+      loader: false
     };
   },
+  created() {
+    // let longDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+    let longDate = new Date();
+    var formattedDate = longDate.toISOString().slice(0, 10);
+
+    // only include performances that match the relevant date (above)
+    let filteredPerformances = mockFilms.map(function(CompareWithDate) {
+      CompareWithDate.schedules[0].performances = CompareWithDate.schedules[0].performances.filter(
+        x => x.ts.slice(0, 10) === formattedDate
+      );
+      return CompareWithDate;
+    });
+    // filters out films without any performances on the relevant date
+    this.results = filteredPerformances.filter(
+      obj => obj.schedules[0].performances.length > 0
+    );
+  }
+  /*
   methods: {
     getMovies(url) {
       axios
@@ -93,11 +111,39 @@ export default {
   beforeMount() {
     this.buildUrl();
   },
-  mounted() {
-    socket.on("image links", data => {
-      this.images = data;
-    });
+  */
+
+  /*
+      socket.on("image links", data => {
+        this.images = data;
+      });
+      */
+  //let date = "2019-12-22";
+  // result.schedules[0].performances[0]
+  /*
+      this.results = mockFilms.map(function(ComparisonResult) {
+        ComparisonResult.schedules[0] = ComparisonResult.schedules[0].performances.filter(
+          x => x.ts.slice(0, 10) === date
+        );
+        return ComparisonResult;
+      });
+      */
+  /*
+        .map(element => {
+          let newElt = Object.assign({}, element); // copies element
+          return newElt.schedules.performances.filter(
+            performances => performances.ts.slice(0, 10) === date
+          );
+            });
+          */
+  /*
+      this.results = mockFilms.filter(
+        d => d.schedules[0].performances[0].ts.slice(0, 10) === date
+      );
+      
+    }
   }
+  */
 };
 </script>
 
