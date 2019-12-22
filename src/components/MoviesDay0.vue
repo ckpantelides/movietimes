@@ -13,7 +13,7 @@
                   <div class="media">
                     <div class="media-left">
                       <figure class="image is-128x128">
-                        <!--     <img :src="images[index].poster" alt="Placeholder image" /> -->
+                        <img :src="images[index].poster" alt="Placeholder image" />
                       </figure>
                     </div>
                     <div class="media-content">
@@ -33,7 +33,7 @@
 
             <div slot="back">
               <div class="card" style="padding: 30px 5px; overflow-y:auto">
-                <!--  <p class="blurb">{{ images[index].blurb }}</p> -->
+                <p class="blurb">{{ images[index].blurb }}</p>
               </div>
             </div>
           </vue-flip>
@@ -53,9 +53,9 @@ import VueFlip from "vue-flip";
 import mockFilms from "../assets/films.json";
 
 // socket connects client to server for movie image search
-// var socket = io("http://localhost:8000");
-var socket = io("https://movietime-server.herokuapp.com/");
-const API = "https://cinelistapi.herokuapp.com/get/times/cinema/";
+var socket = io("http://localhost:3000");
+//var socket = io("https://movietime-server.herokuapp.com/");
+const API = "http://localhost:8000/filmtimes";
 
 export default {
   name: "MovieDay0",
@@ -67,83 +67,127 @@ export default {
   },
   data: function() {
     return {
-      images: [],
+      images: [
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        }
+      ],
+      unfilteredResults: [],
       results: [],
-      loader: false
+      loader: true
     };
   },
-  created() {
-    // let longDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
-    let longDate = new Date();
-    var formattedDate = longDate.toISOString().slice(0, 10);
-
-    // only include performances that match the relevant date (above)
-    let filteredPerformances = mockFilms.map(function(CompareWithDate) {
-      CompareWithDate.schedules[0].performances = CompareWithDate.schedules[0].performances.filter(
-        x => x.ts.slice(0, 10) === formattedDate
-      );
-      return CompareWithDate;
-    });
-    // filters out films without any performances on the relevant date
-    this.results = filteredPerformances.filter(
-      obj => obj.schedules[0].performances.length > 0
-    );
-  }
-  /*
+  watch: {
+    images: function() {
+      this.$forceUpdate();
+    }
+  },
   methods: {
     getMovies(url) {
       axios
         .get(url)
         .then(response => {
-          this.results = response.data.listings;
+          this.unfilteredResults = response.data;
           this.loader = false;
-          // data emitted to server, so server can perform movie image search
-          socket.emit("request images", { data: response.data.listings });
+          this.filterResults();
         })
         .catch(error => {
           console.log(error);
         });
     },
     buildUrl() {
-      this.getMovies(API + this.IDtoSearch);
+      // this.getMovies(API + this.IDtoSearch);
+      this.getMovies(API);
+    },
+    filterResults() {
+      // date function for other days:
+      // let longDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+      let longDate = new Date();
+      var formattedDate = longDate.toISOString().slice(0, 10);
+
+      // only include performances that match the relevant date (above)
+      let filteredPerformances = this.unfilteredResults.map(function(
+        CompareWithDate
+      ) {
+        CompareWithDate.schedules[0].performances = CompareWithDate.schedules[0].performances.filter(
+          x => x.ts.slice(0, 10) === formattedDate
+        );
+        return CompareWithDate;
+      });
+      // filters out films without any performances on the relevant date
+      this.results = filteredPerformances.filter(
+        obj => obj.schedules[0].performances.length > 0
+      );
+      this.requestImages();
+    },
+    requestImages() {
+      let movieNames = [];
+      let arr = this.results;
+      // get an array of the movie array
+      for (let i = 0; i < arr.length; i++) {
+        movieNames.push(arr[i].name);
+      }
+      // emits the movie names array to the server, so the server can search for movie posters
+      socket.emit("request images", { data: movieNames });
     }
   },
   beforeMount() {
     this.buildUrl();
   },
-  */
-
-  /*
-      socket.on("image links", data => {
-        this.images = data;
-      });
-      */
-  //let date = "2019-12-22";
-  // result.schedules[0].performances[0]
-  /*
-      this.results = mockFilms.map(function(ComparisonResult) {
-        ComparisonResult.schedules[0] = ComparisonResult.schedules[0].performances.filter(
-          x => x.ts.slice(0, 10) === date
-        );
-        return ComparisonResult;
-      });
-      */
-  /*
-        .map(element => {
-          let newElt = Object.assign({}, element); // copies element
-          return newElt.schedules.performances.filter(
-            performances => performances.ts.slice(0, 10) === date
-          );
-            });
-          */
-  /*
-      this.results = mockFilms.filter(
-        d => d.schedules[0].performances[0].ts.slice(0, 10) === date
-      );
-      
-    }
+  mounted() {
+    socket.on("image links", data => {
+      this.images = data;
+    });
   }
-  */
 };
 </script>
 
