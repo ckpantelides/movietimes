@@ -13,20 +13,19 @@
                   <div class="media">
                     <div class="media-left">
                       <figure class="image is-128x128">
-                        <img
-                          :src="images[index].poster"
-                          alt="Placeholder image"
-                        />
+                        <img :src="images[index].poster" alt="Placeholder image" />
                       </figure>
                     </div>
                     <div class="media-content">
-                      <p class="title is-4">{{ result.title }}</p>
+                      <p class="title is-4">{{ result.name }}</p>
                     </div>
                   </div>
                 </div>
                 <footer class="card-footer">
-                  <p class="card-footer-item" v-for="el in result.times">
-                    <span>{{ el }}</span>
+                  <p class="card-footer-item" v-for="el in result.schedules[0].performances">
+                    <a :href="el.links[0].url" target="_blank">
+                      <span>{{ el.ts.slice(11, 16) }}</span>
+                    </a>
                   </p>
                 </footer>
               </div>
@@ -51,11 +50,12 @@
 import axios from "axios";
 import io from "socket.io-client";
 import VueFlip from "vue-flip";
+import mockFilms from "../assets/films.json";
 
 // socket connects client to server for movie image search
-// var socket = io("http://localhost:8000");
+//var socket = io("http://localhost:3000");
 var socket = io("https://movietime-server.herokuapp.com/");
-const API = "https://cinelistapi.herokuapp.com/get/times/cinema/";
+const API = "http://localhost:8000/filmtimes";
 
 export default {
   name: "MovieDay1",
@@ -67,27 +67,164 @@ export default {
   },
   data: function() {
     return {
-      images: [],
+      images: [
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        }
+      ],
+      unfilteredResults: [],
       results: [],
       loader: true
     };
+  },
+  watch: {
+    images: function() {
+      this.$forceUpdate();
+    }
   },
   methods: {
     getMovies(url) {
       axios
         .get(url)
         .then(response => {
-          this.results = response.data.listings;
+          this.unfilteredResults = response.data;
           this.loader = false;
-          // data emitted to server, so server can perform movie image search
-          socket.emit("request images", { data: response.data.listings });
+          this.filterResults();
         })
         .catch(error => {
           console.log(error);
         });
     },
     buildUrl() {
-      this.getMovies(API + this.IDtoSearch + "?day=1");
+      // this.getMovies(API + this.IDtoSearch);
+      this.getMovies(API);
+    },
+    filterResults() {
+      // Adds 1 day to today's date
+      let longDate = new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000);
+      var formattedDate = longDate.toISOString().slice(0, 10);
+
+      // only include performances that match the relevant date (above)
+      let filteredPerformances = this.unfilteredResults.map(function(
+        CompareWithDate
+      ) {
+        CompareWithDate.schedules[0].performances = CompareWithDate.schedules[0].performances.filter(
+          x => x.ts.slice(0, 10) === formattedDate
+        );
+        return CompareWithDate;
+      });
+      // filters out films without any performances on the relevant date
+      this.results = filteredPerformances.filter(
+        obj => obj.schedules[0].performances.length > 0
+      );
+      this.requestImages();
+    },
+    requestImages() {
+      let movieNames = [];
+      let arr = this.results;
+      // get an array of the movie array
+      for (let i = 0; i < arr.length; i++) {
+        movieNames.push(arr[i].name);
+      }
+      // emits the movie names array to the server, so the server can search for movie posters
+      socket.emit("request images", { data: movieNames });
     }
   },
   beforeMount() {

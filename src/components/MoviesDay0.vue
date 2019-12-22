@@ -53,8 +53,8 @@ import VueFlip from "vue-flip";
 import mockFilms from "../assets/films.json";
 
 // socket connects client to server for movie image search
-var socket = io("http://localhost:3000");
-//var socket = io("https://movietime-server.herokuapp.com/");
+//var socket = io("http://localhost:3000");
+var socket = io("https://movietime-server.herokuapp.com/");
 const API = "http://localhost:8000/filmtimes";
 
 export default {
@@ -68,6 +68,54 @@ export default {
   data: function() {
     return {
       images: [
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
+        {
+          poster: "~/assets/images/placeholder.png",
+          blurb: "Description loading..."
+        },
         {
           poster: "~/assets/images/placeholder.png",
           blurb: "Description loading..."
