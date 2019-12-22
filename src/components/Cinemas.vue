@@ -11,9 +11,9 @@
             v-model="location"
             placeholder="City, town or placename"
           />
-          <span class="icon" @click="saveLocation">
+          <!-- <span class="icon" @click="saveLocation">
             <i class="fas fa-search" style="color:white; vertical-align:middle"></i>
-          </span>
+          </span>-->
         </div>
       </div>
       <div class="cinemaCards">
@@ -22,7 +22,7 @@
         <div class="loader" v-if="loader"></div>
         <!-- Cinema search results -->
         <div v-for="result in results">
-          <div class="card" @click="cinemaChosen(result.id)">
+          <div class="card" @click="cinemaChosen(result.place_id)">
             <div class="card-content">
               <p class="subtitle has-text-weight-semibold">{{ result.name }}</p>
               <p>{{ result.address }} {{ result.postal_code }}</p>
@@ -43,63 +43,80 @@
 <script>
 import axios from "axios";
 import mockData from "../assets/cinemas.json";
-const API = "https://cinelistapi.herokuapp.com/search/cinemas/coordinates/";
+const API = "http://localhost:8000/cinemas";
 
 export default {
   name: "Cinemas",
-  props: {
-    msg: String
-  },
+  props: {},
   data: function() {
     return {
       cinemaID: Number,
-      results: mockData,
+      lat: "",
+      lon: "",
+      results: [],
       location: "",
-      loader: false // as using mock data
+      loader: true
     };
   },
   methods: {
-    /*
     getCinemas(url) {
       axios
-        .get(url)
+        .get(url, {
+          params: {
+            // lat: this.lat,
+            // lon: this.lon
+            lat: 51.6016,
+            lon: -0.1934
+          }
+        })
         .then(response => {
-          let firstTenResults = response.data.cinemas.slice(0, 10);
-          this.results = firstTenResults;
+          // need to reformat results from HTML observable into an array of objects
+          let reformattedResults = [];
+          for (let i = 0; i < response.data.length; i++) {
+            reformattedResults[i] = {
+              name: response.data[i].name,
+              address: response.data[i].address,
+              postal_code: response.data[i].postal_code,
+              _distance: response.data[i]._distance,
+              place_id: response.data[i].place_id
+            };
+          }
+          this.results = reformattedResults;
           this.loader = false;
         })
         .catch(error => {
           console.log("Error with coordinate search");
-          this.getCinemas(
-            "https://cinelistapi.herokuapp.com/search/cinemas/location/finchley"
-          );
         });
+    },
+    getCinemasDefault() {
+      this.results = mockData;
+      this.loader = false;
     },
     geolocation() {
       navigator.geolocation.getCurrentPosition(this.buildUrl, this.geoError);
     },
     buildUrl(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-
-      this.getCinemas(API + lat + "/" + lon);
+      this.lat = position.coords.latitude;
+      this.lon = position.coords.longitude;
+      this.getCinemas(API);
     },
+    // need error handling update
     geoError() {
-      this.getCinemas(API + "51.510357/-0.116773");
+      this.getCinemasDefault();
     },
-    */
     cinemaChosen(cinemaID) {
       this.$emit("cinemaChosen", cinemaID);
     }
-  }
+  },
   /*,
     saveLocation() {
       this.$emit("newCinemaSearch", this.location);
     }
   },
+  */
   beforeMount() {
     this.geolocation();
-  } */
+  }
 };
 </script>
 
