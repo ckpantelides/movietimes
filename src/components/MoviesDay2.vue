@@ -171,7 +171,14 @@ export default {
       ],
       unfilteredResults: [],
       results: [],
-      loader: true
+      loader: true,
+      el: {
+        links: [
+          {
+            url: "www.google.com"
+          }
+        ]
+      }
     };
   },
   watch: {
@@ -182,7 +189,11 @@ export default {
   methods: {
     getMovies(url) {
       axios
-        .get(url)
+        .get(url, {
+          params: {
+            cinemaID: this.IDtoSearch
+          }
+        })
         .then(response => {
           this.unfilteredResults = response.data;
           this.loader = false;
@@ -191,10 +202,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-    buildUrl() {
-      // this.getMovies(API + this.IDtoSearch);
-      this.getMovies(API);
     },
     filterResults() {
       // 2 days added to today's date
@@ -228,7 +235,7 @@ export default {
     }
   },
   beforeMount() {
-    this.buildUrl();
+    this.getMovies(API);
   },
   mounted() {
     socket.on("image links", data => {

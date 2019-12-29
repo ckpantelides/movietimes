@@ -50,7 +50,7 @@ export default {
   props: {},
   data: function() {
     return {
-      cinemaID: Number,
+      cinemaID: String,
       lat: "",
       lon: "",
       results: [],
@@ -63,10 +63,10 @@ export default {
       axios
         .get(url, {
           params: {
-            // lat: this.lat,
-            // lon: this.lon
-            lat: 51.6016,
-            lon: -0.1934
+            lat: this.lat,
+            lon: this.lon
+            // lat: 51.6016,
+            // lon: -0.1934
           }
         })
         .then(response => {
@@ -105,6 +105,7 @@ export default {
       this.getCinemasDefault();
     },
     cinemaChosen(cinemaID) {
+      console.log(cinemaID);
       this.$emit("cinemaChosen", cinemaID);
     }
   },

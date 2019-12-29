@@ -26,13 +26,13 @@ export default {
   data: function() {
     return {
       currentComponent: Cinemas,
-      cinemaIDprop: Number,
+      cinemaIDprop: String,
       newLocation: String
     };
   },
   methods: {
     loadMovieTimes(payload) {
-      this.cinemaIDprop = parseInt(payload);
+      this.cinemaIDprop = payload;
       this.currentComponent = MovieTimes;
     },
     reloadCinemas() {

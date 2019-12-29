@@ -19,21 +19,15 @@
                 this.componentOpenedFirstTime === true
             }
           ]"
-        >
-          Today
-        </p>
+        >Today</p>
         <p
           @click="chooseMoviesDay('MoviesDay1')"
           :class="['tab', { active: currentComponent === 'MoviesDay1' }]"
-        >
-          Tomorrow
-        </p>
+        >Tomorrow</p>
         <p
           @click="chooseMoviesDay('MoviesDay2')"
           :class="['tab', { active: currentComponent === 'MoviesDay2' }]"
-        >
-          {{ dayAfterTomorrow }}
-        </p>
+        >{{ dayAfterTomorrow }}</p>
       </div>
       <component :is="currentComponent" :IDtoSearch="IDtoSearch"></component>
     </section>
@@ -48,7 +42,7 @@ import MoviesDay2 from "../components/MoviesDay2.vue";
 export default {
   name: "MovieTimes",
   props: {
-    IDtoSearch: Number
+    IDtoSearch: String
   },
   components: {
     MoviesDay0,

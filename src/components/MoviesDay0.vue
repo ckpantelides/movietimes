@@ -63,7 +63,7 @@ export default {
     "vue-flip": VueFlip
   },
   props: {
-    IDtoSearch: Number
+    IDtoSearch: String
   },
   data: function() {
     return {
@@ -171,7 +171,14 @@ export default {
       ],
       unfilteredResults: [],
       results: [],
-      loader: true
+      loader: true,
+      el: {
+        links: [
+          {
+            url: "www.google.com"
+          }
+        ]
+      }
     };
   },
   watch: {
@@ -182,7 +189,11 @@ export default {
   methods: {
     getMovies(url) {
       axios
-        .get(url)
+        .get(url, {
+          params: {
+            cinemaID: this.IDtoSearch
+          }
+        })
         .then(response => {
           this.unfilteredResults = response.data;
           this.loader = false;
@@ -192,13 +203,7 @@ export default {
           console.log(error);
         });
     },
-    buildUrl() {
-      // this.getMovies(API + this.IDtoSearch);
-      this.getMovies(API);
-    },
     filterResults() {
-      // date function for other days:
-      // let longDate = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
       let longDate = new Date();
       var formattedDate = longDate.toISOString().slice(0, 10);
 
@@ -229,7 +234,7 @@ export default {
     }
   },
   beforeMount() {
-    this.buildUrl();
+    this.getMovies(API);
   },
   mounted() {
     socket.on("image links", data => {
