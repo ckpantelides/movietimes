@@ -23,7 +23,7 @@
                 </div>
                 <footer class="card-footer">
                   <p class="card-footer-item" v-for="el in result.schedules[0].performances">
-                    <a :href="el.links[0].url" target="_blank">
+                  <!--  <a :href="el.links[0].url" target="_blank"> -->
                       <span>{{ el.ts.slice(11, 16) }}</span>
                     </a>
                   </p>
@@ -55,7 +55,8 @@ import mockFilms from "../assets/films.json";
 // socket connects client to server for movie image search
 //var socket = io("http://localhost:3000");
 var socket = io("https://movietime-server.herokuapp.com/");
-const API = "http://localhost:8000/filmtimes";
+// const API = "http://localhost:8000/filmtimes";
+const API = "https://thelist-api.herokuapp.com/filmtimes";
 
 export default {
   name: "MovieDay2",
@@ -63,7 +64,7 @@ export default {
     "vue-flip": VueFlip
   },
   props: {
-    IDtoSearch: Number
+    IDtoSearch: String
   },
   data: function() {
     return {

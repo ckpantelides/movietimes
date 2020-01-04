@@ -43,7 +43,8 @@
 <script>
 import axios from "axios";
 import mockData from "../assets/cinemas.json";
-const API = "http://localhost:8000/cinemas";
+// const API = "http://localhost:8000/cinemas";
+const API = "https://thelist-api.herokuapp.com/cinemas";
 
 export default {
   name: "Cinemas",
