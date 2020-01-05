@@ -11,9 +11,9 @@
             v-model="location"
             placeholder="City, town or placename"
           />
-          <!-- <span class="icon" @click="saveLocation">
+          <span class="icon" @click="saveLocation">
             <i class="fas fa-search" style="color:white; vertical-align:middle"></i>
-          </span>-->
+          </span>
         </div>
       </div>
       <div class="cinemaCards">
@@ -108,14 +108,13 @@ export default {
     cinemaChosen(cinemaID) {
       console.log(cinemaID);
       this.$emit("cinemaChosen", cinemaID);
-    }
-  },
-  /*,
+    },
     saveLocation() {
+      // appends United Kingdom to all search results (to avoid US placename search)
+      this.location += "United Kingdom";
       this.$emit("newCinemaSearch", this.location);
     }
   },
-  */
   beforeMount() {
     this.geolocation();
   }

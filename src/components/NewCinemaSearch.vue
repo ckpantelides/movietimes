@@ -12,10 +12,7 @@
             placeholder="City, town or placename"
           />
           <span class="icon" @click="newSearch">
-            <i
-              class="fas fa-search"
-              style="color:white; vertical-align:middle"
-            ></i>
+            <i class="fas fa-search" style="color:white; vertical-align:middle"></i>
           </span>
         </div>
       </div>
@@ -26,13 +23,14 @@
         <div class="loader" v-if="loader"></div>
         <!-- Cinema search results -->
         <div v-for="result in results">
-          <div class="card" @click="cinemaChosen(result.id)">
+          <div class="card" @click="cinemaChosen(result.place_id)">
             <div class="card-content">
               <p class="subtitle has-text-weight-semibold">{{ result.name }}</p>
+              <p>{{ result.address }} {{ result.postal_code }}</p>
             </div>
             <footer class="card-footer">
               <p class="card-footer-item">
-                <span>{{ result.distance }} km</span>
+                <span>{{ result._distance }} km</span>
               </p>
             </footer>
           </div>
@@ -45,7 +43,9 @@
 
 <script>
 import axios from "axios";
-const API = "https://cinelistapi.herokuapp.com/search/cinemas/location/";
+import mockData from "../assets/cinemas.json";
+const API = "http://localhost:8000/cinema-search";
+// const API = "https://thelist-api.herokuapp.com/cinema-search";
 
 export default {
   name: "NewCinemaSearch",
@@ -63,24 +63,29 @@ export default {
   methods: {
     getCinemas(url) {
       axios
-        .get(url)
+        .get(url, {
+          params: {
+            searchInput: this.newLocation
+          }
+        })
         .then(response => {
-          let firstTenResults = response.data.cinemas.slice(0, 10);
-          this.results = firstTenResults;
-          this.location = "";
+          // need to reformat results from HTML observable into an array of objects
+          let reformattedResults = [];
+          for (let i = 0; i < response.data.length; i++) {
+            reformattedResults[i] = {
+              name: response.data[i].name,
+              address: response.data[i].address,
+              postal_code: response.data[i].postal_code,
+              _distance: response.data[i]._distance,
+              place_id: response.data[i].place_id
+            };
+          }
+          this.results = reformattedResults;
           this.loader = false;
         })
         .catch(error => {
-          console.log("Error with coordinate search");
-          /****************************************************/
-          // Need to catch error with this too
-          this.getCinemas(
-            "https://cinelistapi.herokuapp.com/search/cinemas/location/finchley"
-          );
+          console.log("Error with location search");
         });
-    },
-    buildUrl() {
-      this.getCinemas(API + this.newLocation);
     },
     cinemaChosen(cinemaID) {
       this.$emit("cinemaChosen", cinemaID);
@@ -88,11 +93,12 @@ export default {
     newSearch() {
       this.results = [];
       this.loader = true;
-      this.getCinemas(API + this.location);
+      this.newLocation = this.location + "United Kingdom";
+      this.getCinemas(API);
     }
   },
   beforeMount() {
-    this.buildUrl();
+    this.getCinemas(API);
   }
 };
 </script>

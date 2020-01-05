@@ -197,7 +197,6 @@ export default {
         })
         .then(response => {
           this.unfilteredResults = response.data;
-          console.log(response.data);
           this.loader = false;
           this.filterResults();
         })
